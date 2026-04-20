@@ -8,6 +8,42 @@
  * ------------------------------------------------------------
  */{
   "sections": {
+    "hero_carousel": {
+      "type": "hero-carousel",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Welcome to our store",
+            "subheading": "Discover our latest collection",
+            "button_label": "Shop now",
+            "overlay_opacity": 60
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "heading": "New arrivals",
+            "subheading": "Fresh styles just dropped",
+            "button_label": "Explore",
+            "overlay_opacity": 60
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ],
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": 5000,
+        "show_arrows": true,
+        "show_pagination": true,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "hero_jVaWmY": {
       "type": "hero",
       "blocks": {
@@ -284,6 +320,7 @@
     }
   },
   "order": [
+    "hero_carousel",
     "hero_jVaWmY",
     "product_list_fa6P9H"
   ]

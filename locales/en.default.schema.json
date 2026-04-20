@@ -434,7 +434,9 @@
     "video_section": "Video",
     "view_all_button": "View all",
     "pills": "Pills",
-    "comparison_slider": "Comparison slider"
+    "comparison_slider": "Comparison slider",
+    "hero_carousel": "Hero carousel",
+    "slide": "Slide"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -1174,7 +1176,15 @@
     "cs_slider_inner_color": "Slider inner color",
     "text_on_images": "Text on images",
     "x_position": "Horizontal position",
-    "y_position": "Vertical position"
+    "y_position": "Vertical position",
+    "autoplay": "Autoplay",
+    "autoplay_speed": "Autoplay speed",
+    "show_arrows": "Show arrows",
+    "show_pagination": "Show pagination",
+    "overlay_opacity": "Overlay opacity",
+    "button_label": "Button label",
+    "button_link": "Button link",
+    "subheading": "Subheading"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

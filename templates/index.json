@@ -15,21 +15,27 @@
         "slide_1": {
           "type": "slide",
           "settings": {
+            "eyebrow": "",
             "heading": "Welcome to our store",
             "subheading": "Discover our latest collection",
+            "overlay_opacity": 60,
             "button_label": "Shop now",
             "button_link": "",
-            "overlay_opacity": 60
+            "button_background": "#ffffff",
+            "button_text_color": "#111111"
           }
         },
         "slide_2": {
           "type": "slide",
           "settings": {
+            "eyebrow": "",
             "heading": "New arrivals",
             "subheading": "Fresh styles just dropped",
+            "overlay_opacity": 60,
             "button_label": "Explore",
             "button_link": "",
-            "overlay_opacity": 60
+            "button_background": "#ffffff",
+            "button_text_color": "#111111"
           }
         }
       },
@@ -38,9 +44,10 @@
         "slide_2"
       ],
       "settings": {
+        "slide_height": "large",
         "autoplay": true,
         "autoplay_speed": 5000,
-        "show_arrows": false,
+        "show_arrows": true,
         "show_pagination": true,
         "color_scheme": "scheme-1",
         "padding-block-start": 0,

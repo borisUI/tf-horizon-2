@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero_carousel": {
       "type": "hero-carousel",
@@ -17,6 +18,7 @@
             "heading": "Welcome to our store",
             "subheading": "Discover our latest collection",
             "button_label": "Shop now",
+            "button_link": "",
             "overlay_opacity": 60
           }
         },
@@ -26,6 +28,7 @@
             "heading": "New arrivals",
             "subheading": "Fresh styles just dropped",
             "button_label": "Explore",
+            "button_link": "",
             "overlay_opacity": 60
           }
         }
@@ -37,7 +40,7 @@
       "settings": {
         "autoplay": true,
         "autoplay_speed": 5000,
-        "show_arrows": true,
+        "show_arrows": false,
         "show_pagination": true,
         "color_scheme": "scheme-1",
         "padding-block-start": 0,
@@ -101,6 +104,7 @@
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
         "media_type_2_mobile": "image",
+        "link": "",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,

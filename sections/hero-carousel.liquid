@@ -4,13 +4,14 @@
   assign autoplay_speed = section.settings.autoplay_speed
   assign show_arrows = section.settings.show_arrows
   assign show_pagination = section.settings.show_pagination
+  assign slide_height = section.settings.slide_height
 %}
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 <div
   id="HeroCarousel-{{ section_id }}"
-  class="hero-carousel color-{{ section.settings.color_scheme }}"
+  class="hero-carousel hero-carousel--height-{{ slide_height }} color-{{ section.settings.color_scheme }}"
   style="
     --section-padding-top: {{ section.settings.padding-block-start }}px;
     --section-padding-bottom: {{ section.settings.padding-block-end }}px;
@@ -22,7 +23,11 @@
         {% liquid
           assign overlay_opacity = block.settings.overlay_opacity | divided_by: 100.0
         %}
-        <div class="swiper-slide hero-carousel__slide" {{ block.shopify_attributes }}>
+        <div
+          class="swiper-slide hero-carousel__slide"
+          style="--hc-button-bg: {{ block.settings.button_background }}; --hc-button-text: {{ block.settings.button_text_color }};"
+          {{ block.shopify_attributes }}
+        >
           {% if block.settings.image != blank %}
             <div class="hero-carousel__media">
               {%- assign sizes_val = '100vw' -%}
@@ -50,6 +55,12 @@
           ></div>
 
           <div class="hero-carousel__content">
+            {% if block.settings.eyebrow != blank %}
+              <span class="hero-carousel__eyebrow">
+                {{ block.settings.eyebrow | escape }}
+              </span>
+            {% endif %}
+
             {% if block.settings.heading != blank %}
               <h2 class="hero-carousel__heading">
                 {{ block.settings.heading | escape }}
@@ -64,8 +75,8 @@
 
             {% if block.settings.button_label != blank %}
               <a
-                href="{{ block.settings.button_link }}"
-                class="hero-carousel__button button button--primary"
+                href="{{ block.settings.button_link | default: '#' }}"
+                class="hero-carousel__button"
               >
                 {{ block.settings.button_label | escape }}
               </a>
@@ -150,7 +161,13 @@
     width: 100%;
     padding-block-start: var(--section-padding-top, 0px);
     padding-block-end: var(--section-padding-bottom, 0px);
+    --swiper-navigation-size: 44px;
   }
+
+  .hero-carousel--height-small { --hc-slide-height: 480px; }
+  .hero-carousel--height-medium { --hc-slide-height: 620px; }
+  .hero-carousel--height-large { --hc-slide-height: 760px; }
+  .hero-carousel--height-full { --hc-slide-height: 100vh; }
 
   .hero-carousel__swiper {
     position: relative;
@@ -163,7 +180,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    aspect-ratio: 2 / 1;
+    height: var(--hc-slide-height, 620px);
     overflow: hidden;
   }
 
@@ -207,18 +224,29 @@
     align-items: flex-start;
     gap: 12px;
     padding: 48px 96px;
-    max-width: 640px;
+    max-width: 620px;
     color: #ffffff;
+  }
+
+  .hero-carousel__eyebrow {
+    font-family: var(--font-heading--family);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: inherit;
+    margin-block-end: 4px;
   }
 
   .hero-carousel__heading {
     font-family: var(--font-heading--family);
-    font-size: clamp(40px, 4.5vw, 64px);
+    font-size: clamp(36px, 4vw, 56px);
     line-height: 1.05;
-    letter-spacing: var(--letter-spacing--heading-normal);
+    letter-spacing: -0.01em;
     font-weight: 700;
     margin: 0;
     color: inherit;
+    text-wrap: balance;
   }
 
   .hero-carousel__subheading {
@@ -231,13 +259,38 @@
   }
 
   .hero-carousel__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin-block-start: 16px;
+    padding: 12px 32px;
+    min-height: 48px;
+    border-radius: 999px;
+    background: var(--hc-button-bg, #ffffff);
+    color: var(--hc-button-text, #111111);
+    font-family: var(--font-body--family);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
-  /* Arrow styles */
-  .hero-carousel__arrow {
+  .hero-carousel__button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .hero-carousel__button:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+
+  /* Arrow styles — specific selectors to override Swiper defaults */
+  .hero-carousel .hero-carousel__arrow.swiper-button-prev,
+  .hero-carousel .hero-carousel__arrow.swiper-button-next {
     position: absolute;
     top: 50%;
+    margin: 0;
     transform: translateY(-50%);
     z-index: 3;
     display: flex;
@@ -254,28 +307,31 @@
     padding: 0;
   }
 
-  .hero-carousel__arrow:hover {
+  .hero-carousel .hero-carousel__arrow.swiper-button-prev:hover,
+  .hero-carousel .hero-carousel__arrow.swiper-button-next:hover {
     background: #ffffff;
     transform: translateY(-50%) scale(1.05);
   }
 
-  .hero-carousel__arrow:focus-visible {
+  .hero-carousel .hero-carousel__arrow.swiper-button-prev:focus-visible,
+  .hero-carousel .hero-carousel__arrow.swiper-button-next:focus-visible {
     outline: 2px solid #ffffff;
     outline-offset: 2px;
   }
 
-  .hero-carousel__arrow--prev {
+  .hero-carousel .hero-carousel__arrow.swiper-button-prev {
     inset-inline-start: 24px;
   }
 
-  .hero-carousel__arrow--next {
+  .hero-carousel .hero-carousel__arrow.swiper-button-next {
     inset-inline-end: 24px;
   }
 
-  /* Override Swiper default arrow styles */
+  /* Kill Swiper's default chevron glyphs */
   .hero-carousel .swiper-button-next::after,
   .hero-carousel .swiper-button-prev::after {
     display: none;
+    content: none;
   }
 
   /* Pagination styles */
@@ -307,8 +363,11 @@
 
   /* Mobile styles */
   @media screen and (max-width: 750px) {
+    .hero-carousel--height-small { --hc-slide-height: 480px; }
+    .hero-carousel--height-medium { --hc-slide-height: 560px; }
+    .hero-carousel--height-large { --hc-slide-height: 640px; }
+
     .hero-carousel__slide {
-      aspect-ratio: 2 / 3;
       align-items: center;
       justify-content: center;
     }
@@ -324,24 +383,29 @@
       text-align: center;
     }
 
+    .hero-carousel__eyebrow {
+      font-size: 12px;
+    }
+
     .hero-carousel__heading {
-      font-size: clamp(32px, 8vw, 44px);
+      font-size: clamp(30px, 7vw, 40px);
     }
 
     .hero-carousel__subheading {
       font-size: var(--font-size--sm);
     }
 
-    .hero-carousel__arrow {
+    .hero-carousel .hero-carousel__arrow.swiper-button-prev,
+    .hero-carousel .hero-carousel__arrow.swiper-button-next {
       width: 40px;
       height: 40px;
     }
 
-    .hero-carousel__arrow--prev {
+    .hero-carousel .hero-carousel__arrow.swiper-button-prev {
       inset-inline-start: 8px;
     }
 
-    .hero-carousel__arrow--next {
+    .hero-carousel .hero-carousel__arrow.swiper-button-next {
       inset-inline-end: 8px;
     }
 
@@ -363,6 +427,18 @@
   "name": "t:names.hero_carousel",
   "tag": "section",
   "settings": [
+    {
+      "type": "select",
+      "id": "slide_height",
+      "label": "Slide height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full", "label": "Full viewport" }
+      ],
+      "default": "medium"
+    },
     {
       "type": "checkbox",
       "id": "autoplay",
@@ -430,6 +506,12 @@
         },
         {
           "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "info": "Small label shown above the heading (e.g. brand name)"
+        },
+        {
+          "type": "text",
           "id": "heading",
           "label": "t:settings.heading",
           "default": "Slide heading"
@@ -439,6 +521,20 @@
           "id": "subheading",
           "label": "t:settings.subheading",
           "default": "Describe something promotional"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "t:settings.overlay_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "default": 60,
+          "unit": "%"
+        },
+        {
+          "type": "header",
+          "content": "Button"
         },
         {
           "type": "text",
@@ -452,14 +548,16 @@
           "label": "t:settings.button_link"
         },
         {
-          "type": "range",
-          "id": "overlay_opacity",
-          "label": "t:settings.overlay_opacity",
-          "min": 0,
-          "max": 100,
-          "step": 5,
-          "default": 60,
-          "unit": "%"
+          "type": "color",
+          "id": "button_background",
+          "label": "Button background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text",
+          "default": "#111111"
         }
       ]
     }
@@ -467,13 +565,19 @@
   "presets": [
     {
       "name": "t:names.hero_carousel",
+      "settings": {
+        "slide_height": "medium"
+      },
       "blocks": [
         {
           "type": "slide",
           "settings": {
-            "heading": "Welcome to our store",
-            "subheading": "Discover our latest collection",
-            "button_label": "Shop now",
+            "eyebrow": "PRIME",
+            "heading": "Feel Younger. Think Sharper. Age Better",
+            "subheading": "Engineered for fast uptake and cellular support.",
+            "button_label": "Start Now",
+            "button_background": "#3DBCC4",
+            "button_text_color": "#ffffff",
             "overlay_opacity": 60
           }
         },
@@ -483,6 +587,8 @@
             "heading": "New arrivals",
             "subheading": "Fresh styles just dropped",
             "button_label": "Explore",
+            "button_background": "#ffffff",
+            "button_text_color": "#111111",
             "overlay_opacity": 60
           }
         }

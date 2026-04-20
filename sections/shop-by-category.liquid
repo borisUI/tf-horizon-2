@@ -1,0 +1,308 @@
+<section
+  id="shopify-section-{{ section.id }}"
+  class="shop-by-category"
+  style="
+    --section-padding-top: {{ section.settings.padding_block_start }}px;
+    --section-padding-bottom: {{ section.settings.padding_block_end }}px;
+  "
+>
+  <div class="shop-by-category__container page-width">
+    <div class="shop-by-category__header">
+      {% if section.settings.heading != blank %}
+        <h2 class="shop-by-category__heading">{{ section.settings.heading | escape }}</h2>
+      {% endif %}
+      {% if section.settings.shop_all_label != blank %}
+        <a
+          href="{{ section.settings.shop_all_url }}"
+          class="shop-by-category__shop-all"
+        >
+          {{ section.settings.shop_all_label | escape }}
+        </a>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="shop-by-category__grid">
+        {% for block in section.blocks %}
+          <div class="shop-by-category__card" {{ block.shopify_attributes }}>
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="shop-by-category__card-link" aria-label="{{ block.settings.label | escape }}">
+            {% endif %}
+              <div class="shop-by-category__card-media">
+                {% if block.settings.image != blank %}
+                  {{
+                    block.settings.image
+                    | image_url: width: block.settings.image.width
+                    | image_tag:
+                      sizes: '(min-width: 750px) 25vw, 50vw',
+                      widths: '173,207,334,418,668,836',
+                      loading: 'lazy',
+                      class: 'shop-by-category__card-image',
+                      alt: block.settings.label
+                  }}
+                {% else %}
+                  {{ 'collection-1' | placeholder_svg_tag: 'shop-by-category__card-placeholder' }}
+                {% endif %}
+              </div>
+              {% if block.settings.label != blank %}
+                <span class="shop-by-category__card-label">{{ block.settings.label | escape }}</span>
+              {% endif %}
+            {% if block.settings.link != blank %}
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+.shop-by-category {
+  padding-block-start: var(--section-padding-top, 64px);
+  padding-block-end: var(--section-padding-bottom, 64px);
+}
+
+.shop-by-category__container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+
+.shop-by-category__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.shop-by-category__heading {
+  font-family: var(--font-heading--family);
+  font-size: 36px;
+  line-height: 40px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: rgb(var(--color-foreground));
+  margin: 0;
+}
+
+.shop-by-category__shop-all {
+  font-family: var(--font-body--family);
+  font-size: 18px;
+  line-height: 38px;
+  font-weight: 500;
+  color: #098AA7;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.shop-by-category__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.shop-by-category__card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.shop-by-category__card-link {
+  display: block;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 16px;
+  overflow: hidden;
+
+  &:focus-visible {
+    outline: 2px solid rgb(var(--color-foreground));
+    outline-offset: 2px;
+  }
+}
+
+.shop-by-category__card-media {
+  position: relative;
+  aspect-ratio: 334 / 418;
+  overflow: hidden;
+}
+
+.shop-by-category__card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.shop-by-category__card-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shop-by-category__card-label {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-body--family);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+@media screen and (max-width: 749px) {
+  .shop-by-category__container {
+    gap: 16px;
+  }
+
+  .shop-by-category__heading {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .shop-by-category__shop-all {
+    font-size: 16px;
+  }
+
+  .shop-by-category__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .shop-by-category__card-media {
+    aspect-ratio: 1 / 1;
+  }
+
+  .shop-by-category__card-label {
+    font-size: 16px;
+    line-height: 20px;
+    bottom: 12px;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.shop_by_category",
+  "class": "shop-by-category-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "text",
+      "id": "shop_all_label",
+      "label": "t:settings.shop_all_label",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "shop_all_url",
+      "label": "t:settings.shop_all_url"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_block_start",
+      "label": "t:settings.padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_block_end",
+      "label": "t:settings.padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 64,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category-card",
+      "name": "t:names.category_card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:settings.image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:settings.label",
+          "default": "Category"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:settings.link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.shop_by_category",
+      "blocks": [
+        {
+          "type": "category-card",
+          "settings": {
+            "label": "Beauty & Skincare"
+          }
+        },
+        {
+          "type": "category-card",
+          "settings": {
+            "label": "Health & Nutrition"
+          }
+        },
+        {
+          "type": "category-card",
+          "settings": {
+            "label": "Jewelery"
+          }
+        },
+        {
+          "type": "category-card",
+          "settings": {
+            "label": "Weight Management"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

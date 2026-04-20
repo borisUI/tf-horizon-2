@@ -161,7 +161,7 @@
   .hero-carousel__slide {
     position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-start;
     aspect-ratio: 2 / 1;
     overflow: hidden;
@@ -205,17 +205,18 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
-    padding: 48px 64px;
-    max-width: 600px;
+    gap: 12px;
+    padding: 48px 96px;
+    max-width: 640px;
     color: #ffffff;
   }
 
   .hero-carousel__heading {
     font-family: var(--font-heading--family);
-    font-size: var(--font-size--3xl);
-    line-height: var(--line-height--display-tight);
+    font-size: clamp(40px, 4.5vw, 64px);
+    line-height: 1.05;
     letter-spacing: var(--letter-spacing--heading-normal);
+    font-weight: 700;
     margin: 0;
     color: inherit;
   }
@@ -230,7 +231,7 @@
   }
 
   .hero-carousel__button {
-    margin-block-start: 8px;
+    margin-block-start: 16px;
   }
 
   /* Arrow styles */
@@ -242,20 +243,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    color: #111111;
     cursor: pointer;
-    transition: background 0.2s ease;
-    backdrop-filter: blur(4px);
+    transition: background 0.2s ease, transform 0.2s ease;
     padding: 0;
   }
 
   .hero-carousel__arrow:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: #ffffff;
+    transform: translateY(-50%) scale(1.05);
   }
 
   .hero-carousel__arrow:focus-visible {
@@ -264,11 +265,11 @@
   }
 
   .hero-carousel__arrow--prev {
-    inset-inline-start: 16px;
+    inset-inline-start: 24px;
   }
 
   .hero-carousel__arrow--next {
-    inset-inline-end: 16px;
+    inset-inline-end: 24px;
   }
 
   /* Override Swiper default arrow styles */
@@ -308,7 +309,7 @@
   @media screen and (max-width: 750px) {
     .hero-carousel__slide {
       aspect-ratio: 2 / 3;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
     }
 
@@ -324,7 +325,7 @@
     }
 
     .hero-carousel__heading {
-      font-size: var(--font-size--2xl);
+      font-size: clamp(32px, 8vw, 44px);
     }
 
     .hero-carousel__subheading {
